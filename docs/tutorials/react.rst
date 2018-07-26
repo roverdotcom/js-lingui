@@ -61,7 +61,7 @@ As you can see, it's a simple mailbox application with only one page.
 Installing jsLingui
 ========================
 
-jsLingui_ isn't just a package. It's a set of tools which helps you to
+jsLingui_ isn't just one package. It's a set of tools which helps you to
 internationalize. You can pick whichever tool you want to use in your project.
 We're trying to use most of them to show the full power of jsLingui.
 
@@ -73,9 +73,11 @@ Let's start with the three major packages:
 ``@lingui/react``
    React components for translation and formatting
 
-``@lingui/babel-preset-react``
-   Transforms messages wrapped in components from ``@lingui/react`` to ICU
-   MessageFormat and validates them
+``@lingui/react.macro``
+   Generating messages from JSX components (for translation with rich-text support)
+
+``@lingui/js.macro``
+   Generating messages from ES6 tagged template strings (useful for HTML attributes)
 
 1. ``@lingui/cli`` comes with handy :cli:`init` command, which detects the
    project type and install all required packages automatically. Feel free to run
@@ -95,15 +97,19 @@ Let's start with the three major packages:
 
    .. note::
 
-      Under the hood it installs ``@lingui/babel-preset-react`` as a development
-      dependency and ``@lingui/react`` as a runtime dependency (in React projects):
+      Under the hood it installs ``@lingui/js.macro``, ``@lingui/react.macro`` and
+      ``babel-plugin-macros`` as development dependencies and ``@lingui/react`` as
+      a runtime dependency (in React projects):
 
       .. code-block:: shell
 
          npm install --save @lingui/react
-         npm install --save-dev @lingui/babel-preset-react
+         npm install --save-dev @lingui/js.macro
+         npm install --save-dev @lingui/react.macro
+         npm install --save-dev babel-plugin-macros
 
-2. Add ``@lingui/babel-preset-react`` preset to Babel config (e.g: ``.babelrc``):
+2. Add ``babel-plugin-macro`` to Babel config (e.g: ``.babelrc``) and make sure it's
+   the first plugin in a list:
 
    .. code-block:: json
 
@@ -111,7 +117,9 @@ Let's start with the three major packages:
         "presets": [
           "env",
           "react",
-          "@lingui/babel-preset-react"
+        ],
+        "plugins": [
+          "macros"
         ]
       }
 
@@ -179,9 +187,11 @@ you're able to say it three times very quickly.
 
 .. note::
 
-   From now on, *internationalization* will be shortened to a common acronym *i18n*.
+   From now on, *internationalization* will be shortened to a common numeronym *i18n*.
 
-Let's start with the basics - static messages. These messages don't have any variables, HTML or components inside. 
+Let's start with the basics - static messages. These messages don't have any variables,
+HTML or components inside.
+
 Just some text:
 
 .. code-block:: jsx
@@ -189,11 +199,11 @@ Just some text:
    <h1>Message Inbox</h1>
 
 All we need to make this heading translatable is wrap it in :component:`Trans`
-component:
+macro:
 
 .. code-block:: jsx
 
-   import { Trans } from '@lingui/react';
+   import { Trans } from '@lingui/react.macro';
    
    <h1><Trans>Message Inbox</Trans></h1>
 
@@ -208,7 +218,7 @@ variables, some HTML and components inside:
    </p>
 
 Nothing special here. Again, we just need to wrap the content in :component:`Trans`
-component:
+macro:
 
 .. code-block:: html
 
@@ -221,10 +231,10 @@ component:
 
 Spooky, right? Let's pause for a while.
 
-All children of :component:`Trans` component are transformed into ICU MessageFormat
+All children of :component:`Trans` macro are transformed into ICU MessageFormat
 syntax, which is the standard format for i18n.
 
-This component:
+This macro:
 
 .. code-block:: jsx
 
@@ -299,7 +309,7 @@ It may look a bit *hackish* at first sight, but these transformations are
 actually very easy, intuitive and feel very *Reactish*. We don't have to think
 about the MessageFormat, because it's created by the library. We write our
 components in the same way as we're used to and simply wrap text in
-:component:`Trans` component.
+:component:`Trans` macro.
 
 Let's see some examples with MessageFormat equivalents:
 
@@ -467,6 +477,8 @@ component, which takes a ``value`` prop and based on the active language, select
 the right plural form:
 
 .. code-block:: jsx
+
+   import { Plural } from '@lingui/react.macro';
 
    <p>
       <Plural
@@ -661,7 +673,7 @@ After all modifications, the final component with i18n looks like this:
 
    // Inbox.js
    import React from 'react'
-   import { Trans, Plural, DateFormat } from '@lingui/react'
+   import { Trans, Plural, DateFormat } from '@lingui/react.macro'
 
    const Inbox = ({ messages, markAsRead, user }) => {
      const messagesCount = messages.length

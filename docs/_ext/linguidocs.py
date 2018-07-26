@@ -22,6 +22,18 @@ def visit_react_component_html(self, node):
 
 def depart_react_component_html(self, node):
     self.body.append('&gt;')
+    
+    
+class js_macro(nodes.Inline, nodes.TextElement):
+    pass
+
+
+def visit_react_macro_html(self, node):
+    self.body.append('&lt;')
+
+
+def depart_react_macro_html(self, node):
+    self.body.append('&gt;')
 
 
 def parse_lingui_cli_node(env, sig, signode):
@@ -48,6 +60,14 @@ def setup(app):
     )
     app.add_node(react_component,
                  html=(visit_react_component_html, depart_react_component_html))
+    app.add_object_type(
+        directivename='macro',
+        rolename='macro',
+        indextemplate="pair: %s; macro",
+        ref_nodeclass=js_macro,
+        objname='Macro'
+    )
+    app.add_node(js_macro)
     app.add_crossref_type('config', 'conf')
     app.add_crossref_type('icu', 'icu')
 

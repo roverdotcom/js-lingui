@@ -51,6 +51,8 @@ Key features
 
    Core (JavaScript) <ref/core>
    React <ref/react>
+   React Macros <ref/react.macro>
+   JS Macros <ref/js.macro>
    CLI <ref/cli>
    Configuration <ref/conf>
    Webpack Loader <ref/loader>
@@ -70,7 +72,6 @@ Key features
    Projects using jsLingui <misc/showroom>
    Comparison with react-intl <misc/react-intl>
    Talks and articles about i18n in JavaScript <misc/talks-about-i18n>
-
 
 
 Indices
