@@ -39,7 +39,7 @@ Default: ``''``
 Translation from :conf:`fallbackLocale` is used when translation for given locale is missing.
 
 If :conf:`fallbackLocale` isn't defined or translation in :conf:`fallbackLocale` is
-missing too, either message default or message ID is used instead.
+missing too, either default message or message ID is used instead.
 
 .. config:: format
 
