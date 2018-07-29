@@ -72,12 +72,18 @@ export default function({ types: t }) {
       // it might be different when the import is aliased:
       // import { Trans as T } from '@lingui/react';
       ImportDeclaration(path) {
+        console.log("Running extract ImportDeclaration")
         const { node } = path
 
         const moduleName = node.source.value
         if (
           !Array.includes(
-            ["@lingui/react", "@lingui/react-macro", "@lingui/core"],
+            [
+              "@lingui/react",
+              "@lingui/react.macro",
+              "@lingui/core",
+              "@lingui/js.macro"
+            ],
             moduleName
           )
         )

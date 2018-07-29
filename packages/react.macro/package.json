@@ -21,8 +21,7 @@
   "engines": {
     "node": ">=4.0"
   },
-  "dependencies": {
-    "babel-plugin-macros": "^2.2.0",
-    "@lingui/babel-plugin-transform-react": "0.0.0-managed-by-release-script"
+  "peerDependencies": {
+    "babel-plugin-macros": "^2.3.0"
   }
 }

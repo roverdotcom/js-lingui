@@ -8,7 +8,6 @@ import { Select } from '@lingui/react.macro';
 />;
 <Select
   id="msg.select"
-  render="strong"
   value={user.gender}
   male="He"
   female={`She`}

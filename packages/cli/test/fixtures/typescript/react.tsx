@@ -3,14 +3,17 @@ import { Catalog, Catalogs, I18n } from "@lingui/core"
 import {
   withI18n,
   I18nProvider,
-  Trans,
-  Plural,
-  Select,
-  SelectOrdinal,
-  DateFormat,
-  NumberFormat,
   i18nMark
 } from "@lingui/react"
+import {
+    Trans,
+    Plural,
+    Select,
+    SelectOrdinal,
+    DateFormat,
+    NumberFormat,
+} from "@lingui/react.macro"
+import { t } from '@lingui/js.macro'
 
 const catalog: Catalog = {
   messages: {
@@ -29,7 +32,7 @@ interface LocalizeAttributeBaseProps {
 const LocalizeAttributeBase = (props: LocalizeAttributeBaseProps) => {
   const { i18n, age } = props
   return (
-    <span title={i18n.t`Age: ${age}`} aria-label={i18n.t("ageId")`${age} years old`}>Attributes</span>
+    <span title={t`Age: ${age}`} aria-label={t("ageId")`${age} years old`}>Attributes</span>
   )
 }
 

@@ -1,2 +1,6 @@
-const a = i18n.t`msg.hello`
-i18n.t`msg.hello`
+import { t } from '@lingui/js.macro'
+
+const i18n = setupI18n()
+
+const a = t`msg.hello`
+t`msg.hello`

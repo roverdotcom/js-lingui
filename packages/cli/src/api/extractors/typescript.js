@@ -2,8 +2,6 @@
 import fs from "fs"
 import { transform } from "babel-core"
 
-import linguiTransformJs from "@lingui/babel-plugin-transform-js"
-import linguiTransformReact from "@lingui/babel-plugin-transform-react"
 import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 import * as ts from "typescript"
 
@@ -33,25 +31,20 @@ const extractor: ExtractorType = {
       }
     })
 
-    const plugins = [
-      // Plugins run before presets, so we need to import transform-plugins
-      // here until we have a better way to run extract-messages plugin
-      // *after* all plugins/presets.
-      // Transform plugins are idempotent, so they can run twice.
-      linguiTransformJs,
-      linguiTransformReact,
-      [linguiExtractMessages, { localeDir }],
-      ...(options.plugins || [])
-    ]
+    const plugins = ["macros", ...(options.plugins || [])]
 
     if (isTsx) {
       plugins.unshift("syntax-jsx")
     }
 
-    transform(stripped.outputText, {
+    const firstPass = transform(stripped.outputText, {
+      babelrc: false,
+      plugins
+    })
+    transform(firstPass.code, {
       ...options,
       filename,
-      plugins
+      plugins: [[linguiExtractMessages, { localeDir }]]
     })
   }
 }

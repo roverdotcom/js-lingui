@@ -307,7 +307,7 @@ export default class Transformer {
     } else if (this.isChoiceMethod(node.callee)) {
       // i18n.plural, i18n.select and i18n.selectOrdinal
       return this.transformChoiceMethod(node, file, props, root)
-    } else if (this.isFormatMethod(node.callee)) {
+    } else if (!root && this.isFormatMethod(node.callee)) {
       // i18n.date, i18n.number
       return this.transformFormatMethod(node, file, props, root)
     }

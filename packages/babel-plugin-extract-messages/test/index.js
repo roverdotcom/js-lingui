@@ -32,21 +32,14 @@ function testCase(testName, assertion) {
     transformFileSync(path.join(__dirname, "fixtures", filename), {
       babelrc: false,
       plugins: [
-        ...(/integration.*\.js$/.test(filename)
-          ? jsx
-            ? [
-                "@lingui/babel-plugin-transform-js",
-                "@lingui/babel-plugin-transform-react"
-              ]
-            : ["@lingui/babel-plugin-transform-js"]
-          : []),
+        "syntax-jsx",
+        "macros",
         [
           plugin,
           {
             localeDir: LOCALE_DIR
           }
-        ],
-        ...(jsx ? ["babel-plugin-syntax-jsx"] : [])
+        ]
       ]
     })
 
@@ -166,23 +159,6 @@ describe("babel-plugin-lingui-extract-messages", function() {
     }
   )
 
-  testCase(
-    "should extract all messages from JSX files (integration with alises)",
-    transform => {
-      // first run should create all required folders and write messages
-      expect(transform("jsx/integration-with-aliases.js")).not.toThrow()
-      // another runs should just write messages
-      expect(transform("jsx/integration-with-aliases.js")).not.toThrow()
-
-      const messages = JSON.parse(
-        fs.readFileSync(
-          path.join(buildDir, "jsx", "integration-with-aliases.js.json")
-        )
-      )
-      expect(messages).toMatchSnapshot()
-    }
-  )
-
   testCase("should extract all messages from JS files", transform => {
     // first run should create all required folders and write messages
     expect(transform("js/all.js", false)).not.toThrow()
@@ -217,8 +193,8 @@ describe("babel-plugin-lingui-extract-messages", function() {
         {
           babelrc: false,
           plugins: [
-            "@lingui/babel-plugin-transform-js",
-            "@lingui/babel-plugin-transform-react",
+            "syntax-jsx",
+            "macros",
             [
               plugin,
               {

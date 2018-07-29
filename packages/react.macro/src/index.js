@@ -1,5 +1,7 @@
+// @flow
+
 import { createMacro } from "babel-plugin-macros"
-import Transformer from "@lingui/babel-plugin-transform-react/transformer"
+import Transformer from "./transformer"
 
 const importsToCarryOver = ["DateFormat", "NumberFormat"]
 
@@ -8,14 +10,6 @@ function index({ references, state, babel }) {
   const transformer = new Transformer(babel)
 
   const toKeepImports = ["Trans"]
-
-  // Trick the plugin into thinking we've processed an import
-  transformer.setImportDeclarations(
-    Object.keys(references).reduce((obj, key) => {
-      if (key !== "default" || key !== "Trans") obj[key] = key
-      return obj
-    }, {})
-  )
 
   for (let [tagName, tags] of Object.entries(references)) {
     if (importsToCarryOver.includes(tagName)) toKeepImports.push(tagName)
@@ -43,6 +37,7 @@ function index({ references, state, babel }) {
           specifier => specifier.imported && specifier.imported.name === name
         ) === -1
       ) {
+        console.log(`Pushing ${name} to imports`)
         linguiReactImport.specifiers.push(
           t.importSpecifier(t.identifier(name), t.identifier(name))
         )
@@ -58,6 +53,8 @@ function index({ references, state, babel }) {
       )
     )
   }
+
+  console.log("Finished macro")
 }
 
 const Trans = () => {}
@@ -66,6 +63,23 @@ const Select = () => {}
 const SelectOrdinal = () => {}
 const DateFormat = () => {}
 const NumberFormat = () => {}
+
+type PluralProps = {
+  value: number | string,
+  offset?: number | string,
+  zero?: any,
+  one?: any,
+  two?: any,
+  few?: any,
+  many?: any,
+  other: any,
+  locales?: Locales
+} & RenderProps
+
+type SelectProps = {
+  value: any,
+  other: any
+} & RenderProps
 
 export default createMacro(index)
 export { Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat }

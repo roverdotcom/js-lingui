@@ -18,13 +18,13 @@ describe("typescript-extractor", function() {
     "typescript"
   )
 
-  beforeAll(() => {
-    removeDirectory(LOCALE_DIR)
-  })
-
-  afterAll(() => {
-    removeDirectory(LOCALE_DIR)
-  })
+  // beforeAll(() => {
+  //   removeDirectory(LOCALE_DIR)
+  // })
+  //
+  // afterAll(() => {
+  //   removeDirectory(LOCALE_DIR)
+  // })
 
   it("should extract Typescript file", function() {
     expect(() =>

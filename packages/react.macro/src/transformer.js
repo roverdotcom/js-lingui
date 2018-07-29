@@ -35,19 +35,6 @@ export default class Transformer {
     this.isTransElement = this.elementName("Trans")
   }
 
-  getOriginalImportName(local) {
-    // Either find original import name or use local one
-    const original = Object.keys(this.importDeclarations).filter(
-      name => this.importDeclarations[name] === local
-    )[0]
-
-    return original || local
-  }
-
-  getLocalImportName(name, strict = false) {
-    return this.importDeclarations[name] || (!strict && name)
-  }
-
   isIdAttribute(node) {
     return (
       this.t.isJSXAttribute(node) &&
@@ -65,7 +52,7 @@ export default class Transformer {
   elementName = name => node =>
     this.t.isJSXElement(node) &&
     this.t.isJSXIdentifier(node.openingElement.name, {
-      name: this.getLocalImportName(name, true)
+      name
     })
 
   isChooseElement = node =>
@@ -89,7 +76,7 @@ export default class Transformer {
 
       // Plural, Select, SelectOrdinal
     } else if (this.isChooseElement(node)) {
-      const componentName = this.getOriginalImportName(element.name.name)
+      const componentName = element.name.name
 
       if (node.children.length) {
         throw file.buildCodeFrameError(
@@ -183,7 +170,7 @@ export default class Transformer {
       element.attributes = element.attributes.filter(attr =>
         commonProps.includes(attr.name.name)
       )
-      element.name = t.JSXIdentifier(this.getLocalImportName("Trans"))
+      element.name = t.JSXIdentifier("Trans")
     } else if (this.isFormatElement(node)) {
       if (root) {
         // Don't convert standalone Format elements to ICU MessageFormat.
@@ -192,9 +179,7 @@ export default class Transformer {
         return
       }
 
-      const type = this.getOriginalImportName(element.name.name)
-        .toLowerCase()
-        .replace("format", "")
+      const type = element.name.name.toLowerCase().replace("format", "")
 
       let variable, format
 
@@ -256,7 +241,7 @@ export default class Transformer {
       element.attributes = element.attributes.filter(attr =>
         commonProps.includes(attr.name.name)
       )
-      element.name = t.JSXIdentifier(this.getLocalImportName("Trans"))
+      element.name = t.JSXIdentifier("Trans")
       // Other elements
     } else {
       if (root) return
@@ -328,27 +313,7 @@ export default class Transformer {
     return mergeProps(props, nextProps)
   }
 
-  /**
-   * Used for macro
-   * @param imports
-   */
-  setImportDeclarations(imports) {
-    // Used for the macro to override the imports
-    this.importDeclarations = imports
-  }
-
-  getImportDeclarations() {
-    return this.importDeclarations
-  }
-
   transform = (path, file) => {
-    if (
-      !this.importDeclarations ||
-      !Object.keys(this.importDeclarations).length
-    ) {
-      return
-    }
-
     const { node } = path
     const t = this.t
     this.elementGenerator = generatorFactory()
