@@ -1,0 +1,22 @@
+{
+  "To get started, edit <0>src/App.js</0> and save to reload.": {
+    "translation": "Pro začátek zkuste upravit <0>src/App.js</0>. Stránku obnovíte uložením souboru.",
+    "origin": [
+      [
+        "src/App.js",
+        17
+      ]
+    ],
+    "obsolete": true
+  },
+  "Welcome to React": {
+    "translation": "React vás vítá",
+    "origin": [
+      [
+        "src/App.js",
+        13
+      ]
+    ],
+    "obsolete": true
+  }
+}

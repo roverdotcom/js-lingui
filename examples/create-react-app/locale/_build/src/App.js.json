@@ -1,0 +1,29 @@
+{
+  "App.logo.alt": {
+    "defaults": "Logo of React project",
+    "origin": [
+      [
+        "src/App.js",
+        30
+      ]
+    ]
+  },
+  "App.title": {
+    "defaults": "Welcome to React",
+    "origin": [
+      [
+        "src/App.js",
+        33
+      ]
+    ]
+  },
+  "App.intro": {
+    "defaults": "To get started, edit <0>src/App.js</0> and save to reload.",
+    "origin": [
+      [
+        "src/App.js",
+        37
+      ]
+    ]
+  }
+}
