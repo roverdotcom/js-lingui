@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "chalk": "^2.3.0",
-    "cosmiconfig": "^5.0.5",
+    "cosmiconfig": "^5.0.6",
     "jest-regex-util": "^23.3.0",
     "jest-validate": "^23.4.0"
   },
