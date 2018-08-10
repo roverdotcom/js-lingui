@@ -11,7 +11,8 @@ function index({ references, state, babel }) {
 
   const toKeepImports = ["Trans"]
 
-  for (let [tagName, tags] of Object.entries(references)) {
+  Object.keys(references).forEach(tagName => {
+    const tags = references[tagName]
     if (importsToCarryOver.includes(tagName)) toKeepImports.push(tagName)
 
     tags.forEach(openingTag => {
@@ -21,7 +22,7 @@ function index({ references, state, babel }) {
 
       transformer.transform({ node }, state.file)
     })
-  }
+  })
 
   const linguiReactImport = state.file.path.node.body.find(
     importNode =>
@@ -37,7 +38,6 @@ function index({ references, state, babel }) {
           specifier => specifier.imported && specifier.imported.name === name
         ) === -1
       ) {
-        console.log(`Pushing ${name} to imports`)
         linguiReactImport.specifiers.push(
           t.importSpecifier(t.identifier(name), t.identifier(name))
         )
@@ -53,8 +53,6 @@ function index({ references, state, babel }) {
       )
     )
   }
-
-  console.log("Finished macro")
 }
 
 const Trans = () => {}
@@ -64,22 +62,22 @@ const SelectOrdinal = () => {}
 const DateFormat = () => {}
 const NumberFormat = () => {}
 
-type PluralProps = {
-  value: number | string,
-  offset?: number | string,
-  zero?: any,
-  one?: any,
-  two?: any,
-  few?: any,
-  many?: any,
-  other: any,
-  locales?: Locales
-} & RenderProps
-
-type SelectProps = {
-  value: any,
-  other: any
-} & RenderProps
+// type PluralProps = {
+//   value: number | string,
+//   offset?: number | string,
+//   zero?: any,
+//   one?: any,
+//   two?: any,
+//   few?: any,
+//   many?: any,
+//   other: any,
+//   locales?: Locales
+// } & RenderProps
+//
+// type SelectProps = {
+//   value: any,
+//   other: any
+// } & RenderProps
 
 export default createMacro(index)
 export { Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat }
