@@ -30,7 +30,7 @@ extensions = [
 ]
 
 # For sphinx_sitemap
-site_url = 'https://lingui.github.io/js-lingui/'
+site_url = 'https://lingui.js.org/'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -44,7 +44,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'jsLingui'
-copyright = '2017, Tomáš Ehrlich'
+copyright = '2018, Tomáš Ehrlich'
 author = 'Tomáš Ehrlich'
 
 # The version info for the project you're documenting, acts as replacement for
