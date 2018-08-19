@@ -1,5 +1,30 @@
 # Change Log
 
+<a name="3.0.0"></a>
+## [3.0.0](https://github.com/lingui/js-lingui/compare/v2.4.1...v2.4.2) (TBA)
+
+### Breaking changes
+
+* js/react plugins replaced with macros
+* use React's new context API (@lingui/core/compat/context)
+
+### New Features
+
+* Add metadata to translations ([#197](https://github.com/lingui/js-lingui/issues/197]),
+  [#258](https://github.com/lingui/js-lingui/issues/258])) 
+* `lingui compile` - add Intl polyfill (--no-polyfill opt-out) to compiled catalog ([#263](https://github.com/lingui/js-lingui/issues/263]))
+* `lingui extract` - collect messages from multiple sources ([#257](https://github.com/lingui/js-lingui/issues/257]))
+* `lingui extract` - collect messages from node_modules
+* `lingui compile` - compile messages with tags <0> to React tree
+* allow loading source catalogs (@lingui/core/messageformat)
+* pass message ID, language, translation to render component 
+
+### Bug Fixes
+
+* Normalize whitespace in template literals ([#268](https://github.com/lingui/js-lingui/issues/268]),
+[#265](https://github.com/lingui/js-lingui/issues/265]))
+* `lingui extract` - set NODE_ENV in CRA if not defined ([#237](https://github.com/lingui/js-lingui/issues/237]))
+
 <a name="2.4.2"></a>
 ## [2.4.2](https://github.com/lingui/js-lingui/compare/v2.4.1...v2.4.2) (2018-08-19)
 
