@@ -7,13 +7,16 @@ Proposal for a new ``@lingui/core`` message API using Babel macros released in 3
 Background
 ==========
 
-`jsLingui`_ aims to support both common use cases:
+`jsLingui`_ aims to support these two common use cases:
 
 1. messages which are also used as an ID
 2. messages with custom IDs
 
-Metadata
---------
+In both cases we should be able to define lazy translations, which aren't evaluated
+immediately.
+
+New feature - Metadata
+----------------------
 
 Each message might contain additional medatata::
 
@@ -49,8 +52,8 @@ string::
 Problem 2 - workflow with custom IDs
 ------------------------------------
 
-If using custom message IDs, we define default message and help text just once and then
-use an ID everywhere else::
+In projects using custom message IDs, we define default message and help text just once
+and then use an ID everywhere else::
 
    // Define
    i18n.t("message.id")`Default message with ${param}`
@@ -80,7 +83,7 @@ tag::
    // Macro
    t`Default message`
 
-   // Converted to
+   // Becomes
    i18n._("Defaut message")
 
 With variables::
@@ -88,7 +91,7 @@ With variables::
    // Macro
    t`Default message with ${param}`
 
-   // Converted to
+   // Becomes
    i18n._("Defaut message with {param}", { param })
 
 First (and only) argument passed to ``t`` macro will become message metadata::
@@ -96,153 +99,165 @@ First (and only) argument passed to ``t`` macro will become message metadata::
    // Macro
    t("help text")`Default message`
 
-   // In production, it's converted to
+   // In production, it becomes
    i18n._("Defaut message")
 
-   // In development, it's converted to
+   // In development, it becomes
    i18n._("Defaut message", {}, { description: "help text" })
+
+plurals and other formatters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If ``plural``, ``select`` or ``selectOrdinal`` formats are called with two arguments,
+the first one is considered message metadata::
+
+   // Macro
+   plural("help text", { value, one: "# book", other: "# books" })
+
+   // In production, it becomes
+   i18n._("{value, plural, one {# book} other {# books}}")
+
+   // In development, it becomes
+   i18n._(
+      "{value, plural, one {# book} other {# books}}", {}, { description: "help text" })
 
 Lazy translations
 ~~~~~~~~~~~~~~~~~
 
-The only complications are lazy translations - when we need to define a message, but
-translate it later. This was previously achieved using ``i18Mark``, now it'll be
-replaced with ``t.lazy`` macro::
+Lazy translations are useful when we need to define a message, but translate it later.
+This was previously achieved using ``i18Mark``, now it's be replaced with ``t.lazy``
+macro::
 
    const msg = t.lazy`Default message`
 
-   // In production it becomes
-   const msg = "Default message"
+   // It becomes
+   const msg = () => i18n._("Default message")
 
-   // In development it becomes
-   const msg = define("Default message")
+   // The translation is returned by simply calling the message:
+   const translation = msg()
 
-   // later we can use it with i18n._
-   i18n._(msg)
+   // It's possible to get the ID of message
+   const id = msg.id
 
-   // Consider this real world example:
-   const languages = {
-      en: t.lazy`English`,
-      cs: t.lazy`Czech`,
-      fr: t.lazy`French`,
+It also works for other formats: ``plural.lazy``, ``select.lazy`` and ``selectOrdinal.lazy``.
+
+Multiple lazy translations can be defined using ``defineMessages``::
+
+   const languages = defineMessages({
+      en: `English`,
+      cs: `Czech`,
+      fr: `French`,
    }
-   console.log(Object.keys(languages).map(key => i18n._(key))
+
+Lazy translations are usually defined in different scope than evaluated. Parameters
+are therefore unknown, but we still need to know the name of parameters, so we can
+include it in ICU MessageSyntax. We can use ``arg`` macro for that::
+
+   // Macro
+   const books = plural.lazy({
+      value: arg('count'),
+      one: '# book',
+      other: '# books'
+   })
+
+   const translation = books({ count: 42 })
+
+The advantage is that function books is type-checked. Missing or extra parameters
+are catched by type system.
 
 This is very similar to ``define`` for projects using custom IDs described below.
 The only difference is that ``t.lazy`` doesn't accept message ID as a first argument
-and it can be used only in projects using messages as IDs.
+and should be used only in projects using messages as IDs.
 
 Messages with custom IDs
 ------------------------
 
-Let's enforce a workflow with two stages: 1) definition and 2) usage.
+In projects using custom IDs we use ``t.id`` macro::
+
+   // macro
+   t.id("id", "help text")`default message`
+
+   // In production, it becomes
+   i18n._("id")
+
+   // In development, it becomes
+   i18n._("id", {}, { defaults: "default message", description: "help text" })
+
+Plurals and other formatters have ``.id`` variations as well::
+
+   // Macro
+   plural.id("id", "help text", { value, one: "# book", other: "# books" })
+
+   // In production, it becomes
+   i18n._("id", { value })
+
+   // In development, it becomes
+   i18n._(
+      "id",
+      { value },
+      {
+         defaults: "{value, plural, one {# book} other {# books}}",
+         description: "help text"
+      }
+   )
+
+Lazy translations
+~~~~~~~~~~~~~~~~~
+
+More interesting are lazy translations.
 
 Definition
 ~~~~~~~~~~
 
-Messages are defined using macros ``define`` and ``defineMessages``::
+Single messages is defined using macro ``define``::
 
-   // Define a single message
-   // Two arguments: id and default message
-   define("id", `Default message`)
-   // Three arguments: id, metadata and default message
-   define("id", "help text", `Default message`)
-   define(
-      "id",
-      { description: "help text" },
-      `Default message`
-   )
+   const msg = t.id.lazy("id")`Default message`
 
-   // Define a group of messages
+Group of messages is defined using macro ``defineMessages``::
+
    // Object key becomes message ID
+   // Macro
    const messages = defineMessages({
       id: t("help text")`Default message`
    }
 
-Both ``define`` and ``defineMessages`` are macros::
-
-   const msg = define("id", "help text", `Default message`)
-                                         ^- it's possible to use macros here
-
-   // In production it becomes
-   const msg = "id"
-
-   // In development it becomes
-   const msg = define("id", { defaults: "Default message, description: "help text" })
-
- ``defineMessages`` are similar::
-
-   const messages = defineMessages({
-      id: t("help text")`Default message`
-   }
-
-   // In production it becomes
+   // In production, it becomes
    const messages = {
-      id: "id"
+      id: () => i18n._("id")
    }
-   // In development it becomes
+
+   // In development, it becomes
    const messages = {
-      id: define("id", { defaults: "Default message", description: "help text" })
+      id: () => i18n._("id", {}, { description: "help text", defaults: "Default message"})
    }
 
-Variables in definitions
-~~~~~~~~~~~~~~~~~~~~~~~~
+Using variables is similar as in previous section::
 
-Because these messages are defined in different scope, we don't have access
-to variables inside messages (if any)::
+   const msg = t.id.lazy("id")`Message with ${arg('variable')}`
 
-   const msg = define("id", `Message with ${variable}`)
-                                           ^- does not exist in this scope probably
+   const translation = msg({ variable: 42 })
 
-Let's add another macro, `arg`::
-
-   const msg = define("id", `Message with ${arg('variable')}`)
-
-This may seem unnecessary for simple messages as we could simplify it to::
-
-   const msg = define("id", `Message with {variable}`)
-
-But using ``arg`` macro, we can use other i18n macros, like ``plural``::
-
-   const msg = define("id", plural({
+   const plural = plural.id.lazy("id", {
       value: arg("variable"),
       one: "# book",
       other: "# books",
    }))
 
-Instead of writing this syntax manually::
+   const pluralTranslation = plural({ variable: 42 })
 
-   const msg = define("id", "{variable, plural, one {# book} other {# books}}")
 
 Usage
 ~~~~~
 
-Defined messages are passed to core i18n method ``i18n._``::
+Defined messages are functions which takes variables used in message (if any)::
 
-   const msg = define("id", "help text", "Default message")
-   i18n._(msg)
-
-   // Parameters *must* be passed manually
-   const msg = define("id", "help text", `Default message with ${arg("param")}`)
-   i18n._(msg, { param })
+   const msg = t.id.lazy("id", "help text")`Default message`
+   const translation = msg()
 
    const messages = defineMessages({
       id: t("help text")`Default message`
    }
-   i18n._(msg.id)
-
-TODO
-~~~~
-
-What if I want to define and use the message in one place?
-
-::
-
-   // pass output of define macro to i18n._?
-   i18n._(define("id", "help text", "default message"))
-
-   // _ macro, which is converted to i18n._?
-   _("id", "help text", "default message")
+   messages.id()
 
 Summary
 =======
@@ -252,7 +267,59 @@ The API solves following issues:
 - `#197 <https://github.com/lingui/js-lingui/issues/197>`_ - Add metadata to messages
 - `#258 <https://github.com/lingui/js-lingui/issues/197>`_ - i18Mark should accept default value
 
-In #258, OP is creating a catalog of common translations. This will be solved using
-``defineMessages``.
++-----------------------------+-------------------------+------------------------------+
+| Macro ``t``                 | Translation             | Lazy Translation             |
++=============================+=========================+==============================+
+| Message as ID               | t`Message`              | t.lazy`Message`              |
++-----------------------------+-------------------------+------------------------------+
+| Message as ID with metadata | t(meta)`Message`        | t.lazy(meta)`Message`        |
++-----------------------------+-------------------------+------------------------------+
+| Custom ID                   | t.id(id)`Message`       | t.id.lazy(id)`Message`       |
++-----------------------------+-------------------------+------------------------------+
+| Custom ID with metadata     | t.id(id, meta)`Message` | t.id.lazy(id, meta)`Message` |
++-----------------------------+-------------------------+------------------------------+
 
-``i18Mark`` will become obsolete in favor of ``t.lazy``, ``define`` and ``defineMessages``.
+Argument of ``plural`` are omitted. Macro ``select``, ``selectOrdinal`` are similar:
+
++-----------------------------+------------------------------+-----------------------------------+
+| Macro ``plural``            | Translation                  | Lazy Translation                  |
++=============================+==============================+===================================+
+| Message as ID               | plural({ ... })              | plural.lazy({ ... })              |
++-----------------------------+------------------------------+-----------------------------------+
+| Message as ID with metadata | plural(meta, { ... })        | plural.lazy(meta, { ... })        |
++-----------------------------+------------------------------+-----------------------------------+
+| Custom ID                   | plural.id(id, { ... })       | plural.id.lazy(id, { ... })       |
++-----------------------------+------------------------------+-----------------------------------+
+| Custom ID with metadata     | plural.id(id, meta, { ... }) | plural.id.lazy(id, meta, { ... }) |
++-----------------------------+------------------------------+-----------------------------------+
+
+``i18Mark`` will become obsolete in favor of ``.lazy`` macros.
+
+Common catalogs
+---------------
+
+Feature request from #258, implemented using ``defineMessages``:
+
+.. code-block:: jsx
+
+   import { defineMessages } from `@lingui/js.macro`
+
+   export default defineMessages({
+      yes: "Yes",
+      no: "No",
+      cancel: "Cancel",
+      confirmDelete: `Do you really want to delete ${arg("filename")}?`
+   })
+
+Catalogs are type-checked by default:
+
+.. code-block:: jsx
+
+   import common from './common'
+
+   console.log(common.confirmDelete({ filename: "common.js" }))
+
+   // These examples would throw type error:
+   // common.confrmDelete()  // unknown attribute `confrmDelete` (typo)
+   // common.confirmDelete()  // missing first argument
+   // common.confirmDelete({ flname: "common.js" })  // invalid object type (typo)
