@@ -136,8 +136,8 @@ macro::
    // The translation is returned by simply calling the message:
    const translation = msg()
 
-   // It's possible to get the ID of message
-   const id = msg.id
+   // id attribute of translation function contains the reference to message ID
+   msg.id === "Default message" // message ID
 
 It also works for other formats: ``plural.lazy``, ``select.lazy`` and ``selectOrdinal.lazy``.
 
@@ -147,7 +147,14 @@ Multiple lazy translations can be defined using ``defineMessages``::
       en: `English`,
       cs: `Czech`,
       fr: `French`,
-   }
+   })
+
+   // This is a shortcut for:
+   const languages = defineMessages({
+      en: t.lazy`English`,
+      cs: t.lazy`Czech`,
+      fr: t.lazy`French`,
+   })
 
 Lazy translations are usually defined in different scope than evaluated. Parameters
 are therefore unknown, but we still need to know the name of parameters, so we can
@@ -162,10 +169,8 @@ include it in ICU MessageSyntax. We can use ``arg`` macro for that::
 
    const translation = books({ count: 42 })
 
-The advantage is that function books is type-checked. Missing or extra parameters
-are catched by type system.
 
-This is very similar to ``define`` for projects using custom IDs described below.
+This is very similar to ``id.id.lazy`` for projects using custom IDs described below.
 The only difference is that ``t.lazy`` doesn't accept message ID as a first argument
 and should be used only in projects using messages as IDs.
 
@@ -209,7 +214,7 @@ More interesting are lazy translations.
 Definition
 ~~~~~~~~~~
 
-Single messages is defined using macro ``define``::
+Single messages is defined using macro ``t.id.lazy``::
 
    const msg = t.id.lazy("id")`Default message`
 
@@ -218,8 +223,8 @@ Group of messages is defined using macro ``defineMessages``::
    // Object key becomes message ID
    // Macro
    const messages = defineMessages({
-      id: t("help text")`Default message`
-   }
+      id: t.id("id", "help text")`Default message`,
+   })
 
    // In production, it becomes
    const messages = {
@@ -255,9 +260,9 @@ Defined messages are functions which takes variables used in message (if any)::
    const translation = msg()
 
    const messages = defineMessages({
-      id: t("help text")`Default message`
-   }
-   messages.id()
+      id: t.id("help text")`Default message`
+   })
+   const translation = messages.id()
 
 Summary
 =======

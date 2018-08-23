@@ -5,10 +5,10 @@ import t from "./t"
 import { select, plural, selectOrdinal } from "./select"
 import * as dev from "./dev"
 
-type MessageOptions = {|
+type MessageOptions = {
   defaults?: string,
   formats?: Object
-|}
+}
 
 type Locales = string | string[]
 
@@ -201,6 +201,14 @@ class I18n {
       this.locales,
       this.languageData
     )(values, formats)
+  }
+
+  lazy(id: string) {
+    const translate = (values: Object = {}, options: MessageOptions = {}) => {
+      return this._(id, values, options)
+    }
+    translate.id = id
+    return translate
   }
 
   pluralForm(

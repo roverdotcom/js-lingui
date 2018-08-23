@@ -8,6 +8,7 @@ function index({ references, state, babel }) {
   for (let [tagName, tags] of Object.entries(references)) {
     tags.forEach(tag => {
       let path
+      console.log({ tagName })
       if (tagName === "t" && t.isCallExpression(tag.parentPath)) {
         path = tag.parentPath.parentPath
       } else {
