@@ -32,7 +32,7 @@ export const defaultConfig = {
   srcPathDirs: ["<rootDir>"],
   srcPathIgnorePatterns: [NODE_MODULES],
   format: "lingui",
-  rootDir: ".",
+  rootDir: "",
   extractBabelOptions: {
     plugins: [],
     presets: []
@@ -81,6 +81,8 @@ export function getConfig({ cwd } = {}) {
   // Use deprecated fallbackLanguage, if defined
   raw.fallbackLocale = raw.fallbackLocale || raw.fallbackLanguage || ""
 
-  const rootDir = result ? path.dirname(result.filepath) : defaultRootDir
+  // rootDir is either taken from config, or directory with config and finally cwd
+  const rootDir =
+    raw.rootDir || (result ? path.dirname(result.filepath) : defaultRootDir)
   return replaceRootDir(raw, rootDir)
 }

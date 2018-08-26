@@ -4,6 +4,7 @@ describe("lingui-conf", function() {
   it("should return default config", function() {
     const config = getConfig()
     expect(config).toBeInstanceOf(Object)
+    expect(config.rootDir).toBeDefined()
     expect(config.localeDir).toBeDefined()
     expect(config.sourceLocale).toBeDefined()
     expect(config.fallbackLocale).toBeDefined()

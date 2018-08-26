@@ -8,7 +8,7 @@ Configuration is read from 3 different sources (the first found wins):
 - from ``.linguirc``
 - from ``lingui.config.js``
 
-``<rootDir>`` is replaced with base directory of the configuration file.
+``<rootDir>`` pattern is replaced with :conf:`rootDir`.
 
 Default config:
 
@@ -19,15 +19,16 @@ Default config:
        "compileNamespace": "cjs",
        "extractBabelOptions": {},
        "fallbackLocale": "",
-       "sourceLocale": "",
+       "format": "lingui",
        "localeDir": "<rootDir>/locale",
+       "rootDir": "",
+       "sourceLocale": "",
        "srcPathDirs": [
            "<rootDir>"
        ],
        "srcPathIgnorePatterns": [
            "/node_modules/"
        ],
-       "format": "lingui",
      }
    }
 
@@ -78,7 +79,7 @@ extractBabelOptions
 
 Default: ``{}``
 
-Specify extra babel options used to parse source files when messages are being extracted. Not required in most cases.
+Specify extra babel options used to parse source files when messages are being extracted.
 
 .. code-block:: json
 
@@ -150,6 +151,27 @@ Gettext PO file:
    msgid "MessageID"
    msgstr "Translated Message"
 
+.. config:: localeDir
+
+localeDir
+---------
+
+Default: ``<rootDir>/locale``
+
+Directory where message catalogs should be saved.
+
+.. config:: rootDir
+
+rootDir
+-------
+
+Default: directory, where jsLingui config is found or current working directory.
+
+The root directory that jsLingui uses as a base for extracting messages. In most cases
+this should be set to ``src`` or ``lib``,  corresponding to where the code is stored.
+
+``<rootDir>`` in all path-basaed config settings is replaced with this value.
+
 .. config:: sourceLocale
 
 sourceLocale
@@ -184,12 +206,3 @@ srcPathIgnorePatterns
 Default: ``["/node_modules/"]``
 
 Ignored paths when looking for source files to extract messages from.
-
-.. config:: localeDir
-
-localeDir
----------
-
-Default: ``<rootDir>/locale``
-
-Directory where message catalogs should be saved.
