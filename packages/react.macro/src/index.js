@@ -1,7 +1,5 @@
-// @flow
-
 import { createMacro } from "babel-plugin-macros"
-import Transformer from "./transformer"
+import Transformer from "@lingui/babel-plugin-transform-react/transformer"
 
 const importsToCarryOver = ["DateFormat", "NumberFormat"]
 
@@ -10,6 +8,14 @@ function index({ references, state, babel }) {
   const transformer = new Transformer(babel)
 
   const toKeepImports = ["Trans"]
+
+  // Trick the plugin into thinking we've processed an import
+  transformer.setImportDeclarations(
+    Object.keys(references).reduce((obj, key) => {
+      if (key !== "default" || key !== "Trans") obj[key] = key
+      return obj
+    }, {})
+  )
 
   Object.keys(references).forEach(tagName => {
     const tags = references[tagName]
@@ -61,23 +67,6 @@ const Select = () => {}
 const SelectOrdinal = () => {}
 const DateFormat = () => {}
 const NumberFormat = () => {}
-
-// type PluralProps = {
-//   value: number | string,
-//   offset?: number | string,
-//   zero?: any,
-//   one?: any,
-//   two?: any,
-//   few?: any,
-//   many?: any,
-//   other: any,
-//   locales?: Locales
-// } & RenderProps
-//
-// type SelectProps = {
-//   value: any,
-//   other: any
-// } & RenderProps
 
 export default createMacro(index)
 export { Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat }

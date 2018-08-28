@@ -1,5 +1,5 @@
 import { createMacro, MacroError } from "babel-plugin-macros"
-import Transformer from "./transformer"
+import Transformer from "@lingui/babel-plugin-transform-js/transformer"
 
 function index({ references, state, babel }) {
   const { types: t } = babel
@@ -30,26 +30,6 @@ const select = () => {}
 const selectOrdinal = () => {}
 const date = () => {}
 const number = () => {}
-
-// type PluralForms = {
-//   zero?: string,
-//   one?: string,
-//   two?: string,
-//   few?: string,
-//   many?: string,
-//   other: string
-// }
-//
-// type PluralProps = {
-//   value: number,
-//   offset?: number,
-//   locales?: Locales,
-//   format?: NumberFormat
-// } & PluralForms
-//
-// declare var Intl: {
-//   NumberFormat: any
-// }
 
 export default createMacro(index)
 export { t, plural, select, selectOrdinal, date, number }

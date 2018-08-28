@@ -19,11 +19,11 @@ Object {
     origin: Array [
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/js/integration.js,
-        5,
+        1,
       ],
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/js/integration.js,
-        6,
+        2,
       ],
     ],
   },
@@ -64,21 +64,42 @@ Object {
 }
 `;
 
+exports[`babel-plugin-lingui-extract-messages should extract all messages from JSX files (integration with alises) 1`] = `
+Object {
+  Hi, my name is {name}: Object {
+    origin: Array [
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration-with-aliases.js,
+        3,
+      ],
+    ],
+  },
+}
+`;
+
 exports[`babel-plugin-lingui-extract-messages should extract all messages from JSX files (integration) 1`] = `
 Object {
+  Hi, my name is {name}: Object {
+    origin: Array [
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
+        3,
+      ],
+    ],
+  },
   Title: Object {
     origin: Array [
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
-        7,
+        4,
       ],
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
-        16,
+        13,
       ],
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
-        17,
+        14,
       ],
     ],
   },
@@ -86,15 +107,15 @@ Object {
     origin: Array [
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
-        9,
+        6,
       ],
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
-        19,
+        16,
       ],
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
-        24,
+        21,
       ],
     ],
   },
@@ -149,15 +170,15 @@ Object {
     origin: Array [
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/jsx/integration-with-macro.js,
-        7,
+        4,
       ],
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/jsx/integration-with-macro.js,
-        16,
+        13,
       ],
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/jsx/integration-with-macro.js,
-        17,
+        14,
       ],
     ],
   },
@@ -165,15 +186,15 @@ Object {
     origin: Array [
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/jsx/integration-with-macro.js,
-        9,
+        6,
       ],
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/jsx/integration-with-macro.js,
-        19,
+        16,
       ],
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/jsx/integration-with-macro.js,
-        24,
+        21,
       ],
     ],
   },

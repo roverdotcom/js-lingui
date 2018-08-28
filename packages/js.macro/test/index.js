@@ -148,16 +148,14 @@ describe("js.macro", function() {
 
   describe("formats", function() {
     it("value is missing", function() {
-      expect(transformCode("t`${date()}`;")).toThrowErrorMatchingSnapshot()
+      expect(transformCode("date();")).toThrowErrorMatchingSnapshot()
     })
 
     it("format must be either string, variable or object with custom format", function() {
-      expect(transformCode('t`${number(value, "currency")}`;')).not.toThrow()
-      expect(transformCode("t`${number(value, currency)}`;")).not.toThrow()
-      expect(transformCode("t`${number(value, { digits: 4 })}`;")).not.toThrow()
-      expect(
-        transformCode("t`${number(value, 42)}`;")
-      ).toThrowErrorMatchingSnapshot()
+      expect(transformCode('number(value, "currency");')).not.toThrow()
+      expect(transformCode("number(value, currency);")).not.toThrow()
+      expect(transformCode("number(value, { digits: 4 });")).not.toThrow()
+      expect(transformCode("number(value, 42);")).toThrowErrorMatchingSnapshot()
     })
   })
 })
