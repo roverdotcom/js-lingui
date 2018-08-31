@@ -21,6 +21,7 @@ Default config:
        "fallbackLocale": "",
        "format": "lingui",
        "localeDir": "<rootDir>/locale",
+       "locales": [],
        "rootDir": "",
        "sourceLocale": "",
        "srcPathDirs": [
@@ -159,6 +160,16 @@ localeDir
 Default: ``<rootDir>/locale``
 
 Directory where message catalogs should be saved.
+
+.. config:: locales
+
+locales
+-------
+
+Default: ``[]``
+
+Locales used in project. Must be valid BCP-47 locale and plurals must be available
+for the language.
 
 .. config:: rootDir
 

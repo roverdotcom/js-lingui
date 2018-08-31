@@ -26,18 +26,19 @@ export function replaceRootDir(conf, rootDir) {
 }
 
 export const defaultConfig = {
-  localeDir: "./locale",
-  sourceLocale: "",
-  fallbackLocale: "",
-  srcPathDirs: ["<rootDir>"],
-  srcPathIgnorePatterns: [NODE_MODULES],
-  format: "lingui",
-  rootDir: "",
+  compileNamespace: "cjs",
   extractBabelOptions: {
     plugins: [],
     presets: []
   },
-  compileNamespace: "cjs"
+  fallbackLocale: "",
+  format: "lingui",
+  localeDir: "<rootDir>/locale",
+  locales: [],
+  rootDir: "",
+  sourceLocale: "",
+  srcPathDirs: ["<rootDir>"],
+  srcPathIgnorePatterns: [NODE_MODULES]
 }
 
 const exampleConfig = {
