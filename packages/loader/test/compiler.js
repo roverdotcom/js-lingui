@@ -5,9 +5,9 @@ import MemoryFS from "memory-fs"
 export default (fixture, options = {}) => {
   const compiler = webpack({
     context: __dirname,
-    entry: "." + path.sep + fixture,
+    entry: `./${fixture}`,
     output: {
-      path: __dirname,
+      path: path.resolve(__dirname),
       filename: "bundle.js"
     },
     module: {
@@ -26,7 +26,7 @@ export default (fixture, options = {}) => {
 
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {
-      if (err) reject(err)
+      if (err || stats.hasErrors()) reject(err)
 
       resolve(stats)
     })
