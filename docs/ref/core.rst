@@ -164,7 +164,7 @@ Reference
          import { setupI18n } from "@lingui/core"
 
          const i18n = setupI18n({ missing: "🚨" })
-         i18n._('missing translation') === "🚨"
+         i18n('missing translation') === "🚨"
 
       This might be also a function which is called with active language and message ID:
 
@@ -178,12 +178,40 @@ Reference
          }
 
          const i18n = setupI18n({ missing })
-         i18n._('missing translation') // raises alert
+         i18n('missing translation') // raises alert
 
 .. js:class:: I18n
 
    Constructor for I18n class isn't exported from the package. Instead, always use
    :js:func:`setupI18n` factory function.
+
+   .. js:method:: (messageId [, values [, options]])
+
+      Instance of I18n class is callable. That's the core method for translating and
+      formatting messages.
+
+      *messageId* is a unique message ID which identifies message in catalog.
+
+      *values* is an object of variables used in translated message.
+
+      *options.defaults* is the default translation (optional). This is mostly used when
+      application doesn't use message IDs in natural language (e.g.: ``msg.id`` or
+      ``Component.title``).
+
+      .. code-block:: js
+
+         import { setupI18n } from "@lingui/core"
+
+         const i18n = setupI18n()
+
+         // Simple message
+         i18n("Hello")
+
+         // Message with variables
+         i18n("My name is {name}", { name: "Tom" })
+
+         // Message with custom messageId
+         i18n("msg.id", { name: "Tom" }, { defaults: "My name is {name}" })
 
    .. js:method:: load(catalogs: Catalogs)
 
@@ -253,10 +281,10 @@ Reference
          import { setupI18n } from "@lingui/core"
 
          const i18n = setupI18n({ language: "en" })
-         i18n._("Hello")           // Return "Hello" in English
+         i18n("Hello")           // Return "Hello" in English
 
          i18n.activate("cs")
-         i18n._("Hello")           // Return "Hello" in Czech
+         i18n("Hello")           // Return "Hello" in Czech
 
    .. js:method:: use(language [, locales])
 
@@ -270,32 +298,16 @@ Reference
          const i18n = setupI18n({ language: "en" })
 
          i18n.use("cs")._("Hello") // Return "Hello" in Czech
-         i18n._("Hello")           // Return "Hello" in active language (English)
+         i18n("Hello")           // Return "Hello" in active language (English)
 
    .. js:method:: _(messageId [, values [, options]])
 
-      The core method for translating and formatting messages.
+       ``i18n._`` method is an alias to calling ``i18n`` object directly:
 
-      *messageId* is a unique message ID which identifies message in catalog.
-
-      *values* is an object of variables used in translated message.
-
-      *options.defaults* is the default translation (optional). This is mostly used when
-      application doesn't use message IDs in natural language (e.g.: ``msg.id`` or
-      ``Component.title``).
-
-      .. code-block:: js
+      .. code-block:: jsx
 
          import { setupI18n } from "@lingui/core"
 
-         const i18n = setupI18n()
+         const i18n = setupI18n({ language: "en" })
 
-         // Simple message
-         i18n._("Hello")
-
-         // Message with variables
-         i18n._("My name is {name}", { name: "Tom" })
-
-         // Message with custom messageId
-         i18n._("msg.id", { name: "Tom" }, { defaults: "My name is {name}" })
-
+         i18n("Hello") === i18n._("Hello")

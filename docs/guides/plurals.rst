@@ -43,11 +43,11 @@ it will be *2 books*.
    Funny fact for non-english speakers: In English, 0 uses plural form too,
    *0 books*.
 
-Under the hood, ``i18n.plural`` is replaced with low-level ``i18n._``. For production, the above example will become:
+Under the hood, ``i18n.plural`` is replaced with low-level ``i18n``. For production, the above example will become:
 
 .. code-block:: js
 
-   i18n._('{numBooks, plural, one {# book} other {# books}}', { numBooks })
+   i18n('{numBooks, plural, one {# book} other {# books}}', { numBooks })
 
 When we extract messages from source code using (lingui-cli)[linguiCliTutorial], we get:
 
@@ -79,7 +79,7 @@ the process:
 
    .. code-block:: js
 
-      i18n._(
+      i18n(
          '{numBooks, plural, one {# book} other {# books}}',
          { numBooks }
       )

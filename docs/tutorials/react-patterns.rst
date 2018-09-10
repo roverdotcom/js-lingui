@@ -66,7 +66,7 @@ object and :jsmacro:`t` macro to wrap message:
 1. Use render prop component :component:`I18n` from ``@lingui/react``, to access
    ``i18n`` object.
 
-2. Call :js:meth:`i18n._`` to translate message wrapped in JS macros. :jsmacro:`t` is
+2. Call :js:meth:`i18n`` to translate message wrapped in JS macros. :jsmacro:`t` is
    equivalent for :jsxmacro:`Trans`, :jsmacro:`plural` is equivalent to :component:`Plural`.
 
 .. code-block:: jsx
@@ -78,7 +78,7 @@ object and :jsmacro:`t` macro to wrap message:
       return (
          <I18n>
             {({ i18n }) => (
-               <img src="..." alt={i18n._(t`Image caption`)} />
+               <img src="..." alt={i18n(t`Image caption`)} />
             )}
          </I18n>
       )
@@ -101,7 +101,7 @@ In this example:
       return (
          <I18n>
             {({ i18n }) => (
-               <img src="..." alt={i18n._(t`Image caption`)} />
+               <img src="..." alt={i18n(t`Image caption`)} />
             )}
          </I18n>
       )
@@ -124,7 +124,7 @@ argument and then use string templates as usual:
       return (
          <I18n>
             {({ i18n }) => (
-               <img src="..." alt={i18n._(t('msg.caption')`Image caption`)} />
+               <img src="..." alt={i18n(t('msg.caption')`Image caption`)} />
             )}
          </I18n>
       )
@@ -144,7 +144,7 @@ pass ID as object key:
       return (
          <I18n>
             {({ i18n }) => (
-               <img src="..." alt={i18n._(plural('msg.caption', {
+               <img src="..." alt={i18n(plural('msg.caption', {
                   value: count,
                   one: "# image caption",
                   other: "# image captions",
@@ -192,7 +192,7 @@ a bit more setup:
 
       export function alert() {
          // use i18n as you were inside React component
-         alert(i18n._(t`...`))
+         alert(i18n(t`...`))
       }
 
 Lazy translations
@@ -220,7 +220,7 @@ macro to create a message descriptor and then pass it to :jsxmacro:`Trans` macro
    }
 
 This pattern also work with string-only translations. Just pass the message descriptor
-to :js:meth:`I18n._` method as usual:
+to :js:meth:`i18n` method as usual:
 
 .. code-block:: jsx
 
@@ -232,5 +232,5 @@ to :js:meth:`I18n._` method as usual:
    ]
 
    const translatedLanguages = languages.map(
-      lang => i18n._(lang)
+      lang => i18n(lang)
    )

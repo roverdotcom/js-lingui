@@ -15,7 +15,7 @@ export default function Lingui({ numUsers, name = "You" }) {
         {({ i18n }) => (
           <img
             src="./logo.png"
-            alt={i18n._(t("image.title")`Logo of Lingui Project`)}
+            alt={i18n(t("image.title")`Logo of Lingui Project`)}
           />
         )}
       </I18n>

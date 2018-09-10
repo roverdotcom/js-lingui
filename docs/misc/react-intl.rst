@@ -236,15 +236,15 @@ Here are a few short examples:
 
 .. code-block:: jsx
 
-   <a title={i18n._(t`The title of ${name}`)}>{name}</a>
-   <img alt={i18n._(plural({ value: count, one: "flag", other: "flags" }))} src="..." />
+   <a title={i18n(t`The title of ${name}`)}>{name}</a>
+   <img alt={i18n(plural({ value: count, one: "flag", other: "flags" }))} src="..." />
 
 Custom IDs are supported as well:
 
 .. code-block:: jsx
 
-   <a title={i18n._(t("link.title")`The title of ${name}`}>{name}</a>
-   <img alt={i18n._(plural("img.alt", { value: count, one: "flag", other: "flags" }))} src="..." />
+   <a title={i18n(t("link.title")`The title of ${name}`}>{name}</a>
+   <img alt={i18n(plural("img.alt", { value: count, one: "flag", other: "flags" }))} src="..." />
 
 .. note::
 

@@ -127,17 +127,17 @@ directly but if you did, simply import ``date`` and ``number`` functions from
    // After
    import { date, number } from 'lingui-i18n'
 
-Signature of ``i18n._`` changed
+Signature of ``i18n`` changed
 -------------------------------
 
-``i18n._`` is low-level API for message translation and formatting.
+``i18n`` is low-level API for message translation and formatting.
 The function signature has changed from::
 
-   i18n._(messageId: string, { values: Object, defaults: string, formats: Object })
+   i18n(messageId: string, { values: Object, defaults: string, formats: Object })
 
 to::
 
-   i18n._(messageId: string, values: Object, { defaults: string, formats: Object })
+   i18n(messageId: string, values: Object, { defaults: string, formats: Object })
 
 This change makes usage easier, because ``values`` are commonly used parameter.
 
@@ -147,10 +147,10 @@ enough to upgrade your lingui babel plugin. Otherwise simple refactoring is requ
 .. code-block:: jsx
 
    // before
-   i18n._('Hello {name}', { values: { name: "Fred" } })
+   i18n('Hello {name}', { values: { name: "Fred" } })
 
    // after
-   i18n._('Hello {name}', { name: "Fred" })
+   i18n('Hello {name}', { name: "Fred" })
 
 New features
 ============

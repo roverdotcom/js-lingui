@@ -108,17 +108,17 @@ Localizing your app
 ===================
 
 Once that is done, we can go ahead and use it! Wrap you text in :jsmacro:`t` macro
-and pass it to :js:meth:`i18n._` method:
+and pass it to :js:meth:`i18n` method:
 
 .. code-block:: js
 
    import { t } from "@lingui/macro"
 
-   i18n._(t`Hello World!`)
+   i18n(t`Hello World!`)
    // becomes "Salut le monde!"
 
    const name = "Fred"
-   i18n._(t`My name is ${ name }`)
+   i18n(t`My name is ${ name }`)
    // becomes "Je m'appelle Fred"
 
 Plurals and selections are possible using plural and select methods:
@@ -129,7 +129,7 @@ Plurals and selections are possible using plural and select methods:
 
    const count = 42
 
-   i18n._(plural({
+   i18n(plural({
      value: count,
      one: "# book",
      other: "# books"
@@ -142,7 +142,7 @@ It's also possible to nest message formats. Each message format method in i18n h
 
    import { t, select, plural } from "@lingui/macro"
 
-   i18n._(select({
+   i18n(select({
      value: gender,
      offset: 1,
      female: plural({

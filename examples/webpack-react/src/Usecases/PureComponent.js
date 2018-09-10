@@ -35,7 +35,7 @@ const CorrectUpdate = withI18n()(
 
     render() {
       const { i18n, value } = this.props
-      return <span className="valid">{i18n._(t`The value is: ${value}`)}</span>
+      return <span className="valid">{i18n(t`The value is: ${value}`)}</span>
     }
   }
 )
@@ -47,7 +47,7 @@ const SkippedUpdate = withI18n({ withHash: false })(
     render() {
       const { i18n, value } = this.props
       return (
-        <span className="invalid">{i18n._(t`The value is: ${value}`)}</span>
+        <span className="invalid">{i18n(t`The value is: ${value}`)}</span>
       )
     }
   }

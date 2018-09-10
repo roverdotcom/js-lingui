@@ -20,21 +20,21 @@ export const common = {
  * Example: Static messages - add comment beginning with `i18n:` to add description.
  */
 export function getStatic() {
-  return i18n._(/*i18n: Title of example*/ t`@lingui/core example`)
+  return i18n(/*i18n: Title of example*/ t`@lingui/core example`)
 }
 
 /**
  * Example: Interpolation - variables are passed to messages using template literals
  */
 export function getVariables(name) {
-  return i18n._(t`Hello ${name}`)
+  return i18n(t`Hello ${name}`)
 }
 
 /**
  * Example: Plurals - Template literals can contain formats, like `plural`
  */
 export function getPlural(value) {
-  return i18n._(
+  return i18n(
     t`There are ${plural({
       value,
       one: "# bottle",
@@ -44,13 +44,13 @@ export function getPlural(value) {
 }
 
 /**
- * Example: Lazy translation - Message definitions are passed to `i18n._` to get
+ * Example: Lazy translation - Message definitions are passed to `i18n` to get
  * translation.
  */
 export function getLazy() {
-  const yes = i18n._(common.yes)
-  const no = i18n._(common.no)
-  return i18n._(t`Do you want to proceed? ${yes}/${no}`)
+  const yes = i18n(common.yes)
+  const no = i18n(common.no)
+  return i18n(t`Do you want to proceed? ${yes}/${no}`)
 }
 
 function main(locale) {

@@ -23,11 +23,11 @@ export default class ElementAttributes extends React.Component<
             <a
               className="expression"
               href="/article"
-              title={i18n._(t`Full content of ${articleName}`)}
+              title={i18n(t`Full content of ${articleName}`)}
             >
               <Trans>Article</Trans>
             </a>
-            <button className="variable" aria-label={i18n._(closeLabel)}>
+            <button className="variable" aria-label={i18n(closeLabel)}>
               X
             </button>
           </div>

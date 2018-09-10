@@ -114,8 +114,8 @@ JS macros
 ---------
 
 These macros can be used in any context (e.g. outside JSX) and are intended to work
-in combination with `i18n._` method. All JS macros are transformed into *message descritor*
-which is an object with message ID, default message and other parameters. `i18n._`
+in combination with `i18n` method. All JS macros are transformed into *message descritor*
+which is an object with message ID, default message and other parameters. `i18n`
 accepts message descriptors and performs translation and formatting.
 
 t
@@ -134,19 +134,19 @@ in ICU MessageFormat. It's allowed to use other i18n macros as variables.
    const i18n = setupI18n()
 
    // Static Message
-   const static = i18n._(t`Static Message`)
+   const static = i18n(t`Static Message`)
 
    // My name is {name}
-   const vars = i18n._(t`My name is ${name}`)
+   const vars = i18n(t`My name is ${name}`)
 
    // Macros can be nested, date is macro for date formatting
-   const date = i18n._(t`Today is ${date(name)}`)
+   const date = i18n(t`Today is ${date(name)}`)
 
 Call macro with a custom message ID to override auto-generated one.
 
 .. code-block:: jsx
 
-   const id = i18n._(t('msg.id')`My name is ${name}`)
+   const id = i18n(t('msg.id')`My name is ${name}`)
 
 plural
 ^^^^^^
@@ -166,7 +166,7 @@ forms).
 
    const i18n = setupI18n()
 
-   const msg = i18n._(plural({
+   const msg = i18n(plural({
       value: count,
       one: "# Book",
       other: "# Books"
@@ -174,14 +174,14 @@ forms).
 
    // t macro isn't required for nested messages,
    // template strings are transformed automatically.
-   const vars = i18n._(plural({
+   const vars = i18n(plural({
       value: count,
       one: `${name} has # friend`,
       other: `${name} has # friends`
    }))
 
    // Example of pluralization using two counters
-   const double = i18n._(plural({
+   const double = i18n(plural({
       value: numBooks,
       one: plural({
          value: numArticles,
@@ -200,7 +200,7 @@ Call macro with a string as a first argument to override auto-generated message 
 .. code-block:: jsx
 
    // Override auto-generated message ID
-   const id = i18n._(plural("msg.id", {
+   const id = i18n(plural("msg.id", {
       value: count,
       one: "# Book",
       other: "# Books"
@@ -225,7 +225,7 @@ Second argument (optional) specifies date format.
    const i18n = setupI18n()
 
    const today = new Date()
-   const msg = i18n._(t`Today is ${date(today)}.`)
+   const msg = i18n(t`Today is ${date(today)}.`)
 
 number
 ^^^^^^
@@ -245,8 +245,8 @@ Second argument (optional) specifies number format.
 
    const i18n = setupI18n()
 
-   const msg = i18n._(t`There were ${number(10000)} people.`)
-   const percent = i18n._(t`Interest rate is ${number(0.05, "percent")}.`)
+   const msg = i18n(t`There were ${number(10000)} people.`)
+   const percent = i18n(t`Interest rate is ${number(0.05, "percent")}.`)
 
 JSX Macros
 ----------

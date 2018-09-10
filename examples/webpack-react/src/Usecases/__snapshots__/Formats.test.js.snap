@@ -32,31 +32,7 @@ exports[`Formats should render 1`] = `
               >
                 <Trans
                   className="percent"
-                  i18n={
-                    I18n {
-                      "_activeLanguageData": Object {
-                        "plurals": [Function],
-                      },
-                      "_activeMessages": Object {},
-                      "_catalogs": Object {
-                        "en": Object {
-                          "languageData": Object {},
-                          "messages": Object {},
-                        },
-                      },
-                      "_dev": Object {
-                        "compile": [Function],
-                        "loadLanguageData": [Function],
-                      },
-                      "_language": "en",
-                      "_locales": undefined,
-                      "_missing": undefined,
-                      "plural": [Function],
-                      "select": [Function],
-                      "selectOrdinal": [Function],
-                      "t": [Function],
-                    }
-                  }
+                  i18n={[Function]}
                   i18nHash={null}
                   id="The answer is {answer,number,percent}"
                   values={
@@ -91,31 +67,7 @@ exports[`Formats should render 1`] = `
               >
                 <Trans
                   className="date"
-                  i18n={
-                    I18n {
-                      "_activeLanguageData": Object {
-                        "plurals": [Function],
-                      },
-                      "_activeMessages": Object {},
-                      "_catalogs": Object {
-                        "en": Object {
-                          "languageData": Object {},
-                          "messages": Object {},
-                        },
-                      },
-                      "_dev": Object {
-                        "compile": [Function],
-                        "loadLanguageData": [Function],
-                      },
-                      "_language": "en",
-                      "_locales": undefined,
-                      "_missing": undefined,
-                      "plural": [Function],
-                      "select": [Function],
-                      "selectOrdinal": [Function],
-                      "t": [Function],
-                    }
-                  }
+                  i18n={[Function]}
                   i18nHash={null}
                   id="Today is {now,date}"
                   values={

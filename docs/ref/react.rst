@@ -448,7 +448,7 @@ Using lambda components:
    function LogoutIcon() {
       return (
          <I18n>
-            {({ i18n }) => <Icon name="turn-off" ariaLabel={i18n._(t`Log out`)} />}
+            {({ i18n }) => <Icon name="turn-off" ariaLabel={i18n(t`Log out`)} />}
          </I18n>
       )
    }
@@ -462,7 +462,7 @@ Using components and elements:
    import { t } from "@lingui/macro"
 
    function TranslatedComponent({ i18n }) {
-      return <Icon name="turn-off" ariaLabel={i18n._(t`Log out`)} />
+      return <Icon name="turn-off" ariaLabel={i18n(t`Log out`)} />
    }
 
    function RenderingElements() {
@@ -495,7 +495,7 @@ API for translation of JSX props:
    import { t } from "@lingui/macro"
 
    const LogoutIcon = withI18n()(({ i18n }) => (
-     <Icon name="turn-off" ariaLabel={i18n._(t`Log out`)} />
+     <Icon name="turn-off" ariaLabel={i18n(t`Log out`)} />
    ))
 
 .. note:: :js:func:`withI18n` automatically hoists static properties from wrapped component.

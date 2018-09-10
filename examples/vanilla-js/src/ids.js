@@ -14,15 +14,15 @@ export const common = {
 }
 
 export function getStatic() {
-  return i18n._(/*i18n: Title of example*/ t("static")`@lingui/core example`)
+  return i18n(/*i18n: Title of example*/ t("static")`@lingui/core example`)
 }
 
 export function getVariables(name) {
-  return i18n._(t("variables")`Hello ${name}`)
+  return i18n(t("variables")`Hello ${name}`)
 }
 
 export function getPlural(value) {
-  return i18n._(
+  return i18n(
     t("plural")`There are ${plural({
       value,
       one: "# bottle",
@@ -32,9 +32,9 @@ export function getPlural(value) {
 }
 
 export function getLazy() {
-  const yes = i18n._(common.yes)
-  const no = i18n._(common.no)
-  return i18n._(t("lazy")`Do you want to proceed? ${yes}/${no}`)
+  const yes = i18n(common.yes)
+  const no = i18n(common.no)
+  return i18n(t("lazy")`Do you want to proceed? ${yes}/${no}`)
 }
 
 function main(locale) {

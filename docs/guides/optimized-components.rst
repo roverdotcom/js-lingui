@@ -66,7 +66,7 @@ low-level i18n API. Common usecase is translation of attributes:
 
    class HeaderLink extends React.PureComponent {
       render () {
-         return <a title={i18n._(t`Title`)}><Trans>Header</Trans></a>
+         return <a title={i18n(t`Title`)}><Trans>Header</Trans></a>
       }
    }
 

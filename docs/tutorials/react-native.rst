@@ -95,7 +95,7 @@ we cannot use the :jsxmacro:`Trans` macro here! Also notice that the ``Alert.ale
 call requires a string as well.
 
 Luckily, there is a simple solution: the :component:`I18n` is a render prop component
-which gives us an ``i18n`` prop that we can use like this: ``i18n._(t`this will be translated`)``
+which gives us an ``i18n`` prop that we can use like this: ``i18n(t`this will be translated`)``
 and the result of such a call is a string. Let's see how to do this!
 
 .. hint::
@@ -131,7 +131,7 @@ example:
           <Trans>See all unread messages or</Trans>
           <I18n>
             {({ i18n }) => (
-              <Button onPress={markAsRead} title={i18n._(t`mark messages as read`)} />
+              <Button onPress={markAsRead} title={i18n(t`mark messages as read`)} />
             )}
           </I18n>
       </View>
@@ -192,7 +192,7 @@ but use the one we provide, like this:
 
 Now we're ready to show correctly translated strings anywhere in our app! Just import
 the ``i18n`` object into your non-react code and use it, for example like this:
-``i18n._(t`this will be translated`)``.
+``i18n(t`this will be translated`)``.
 
 The last remaining piece of the puzzle is changing the active language. The ``i18n``
 object exposes two methods for that: ``i18n.load(catalogs)`` and ``i18n.activate(language)``.
