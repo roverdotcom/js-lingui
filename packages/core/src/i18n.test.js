@@ -317,4 +317,95 @@ describe("I18n", function() {
       expect(missing).toHaveBeenCalledWith("en", "missing")
     })
   })
+
+  it("i18n() should format message from catalog", function() {
+    const messages = {
+      Hello: "Salut",
+      "My name is {name}": "Je m'appelle {name}"
+    }
+
+    const i18n = setupI18n({
+      language: "fr",
+      catalogs: { fr: { messages } }
+    })
+
+    expect(i18n("Hello")).toEqual("Salut")
+    expect(i18n("My name is {name}", { name: "Fred" })).toEqual(
+      "Je m'appelle Fred"
+    )
+
+    // missing { name }
+    expect(i18n("My name is {name}")).toEqual("Je m'appelle")
+
+    // Untranslated message
+    expect(i18n("Missing message")).toEqual("Missing message")
+    expect(i18n("Missing {name}", { name: "Fred" })).toEqual("Missing Fred")
+    expect(
+      i18n(
+        "Missing with default",
+        { name: "Fred" },
+        {
+          defaults: "Missing {name}"
+        }
+      )
+    ).toEqual("Missing Fred")
+  })
+
+  it("i18n() should accept message descriptor", function() {
+    const messages = {
+      Hello: "Salut",
+      "My name is {name}": "Je m'appelle {name}"
+    }
+
+    const i18n = setupI18n({
+      language: "fr",
+      catalogs: { fr: { messages } }
+    })
+
+    expect(i18n({ id: "Hello" })).toEqual("Salut")
+    expect(i18n({ id: "My name is {name}", values: { name: "Fred" } })).toEqual(
+      "Je m'appelle Fred"
+    )
+
+    // Untranslated message
+    expect(
+      i18n({
+        id: "Missing with default",
+        values: { name: "Fred" },
+        defaults: "Missing {name}"
+      })
+    ).toEqual("Missing Fred")
+  })
+
+  it("i18n() should translate message from variable", function() {
+    const messages = {
+      Hello: "Salut"
+    }
+
+    const i18n = setupI18n({
+      language: "fr",
+      catalogs: { fr: { messages } }
+    })
+    const hello = "Hello"
+    expect(i18n(hello)).toEqual("Salut")
+  })
+
+  it("i18n() shouldn't compile messages in production", function() {
+    const messages = {
+      Hello: "Salut",
+      "My name is {name}": "Je m'appelle {name}"
+    }
+
+    mockEnv("production", () => {
+      const { setupI18n } = require("@lingui/core")
+      const i18n = setupI18n({
+        language: "fr",
+        catalogs: { fr: { messages } }
+      })
+
+      expect(i18n("My name is {name}", { name: "Fred" })).toEqual(
+        "Je m'appelle {name}"
+      )
+    })
+  })
 })

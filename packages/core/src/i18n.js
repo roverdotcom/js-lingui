@@ -7,6 +7,7 @@ import { date, number } from "./formats"
 import type { DateFormat, NumberFormat } from "./formats"
 
 import * as dev from "./dev"
+import { makeCallableObject } from "./callableObject"
 
 type MessageOptions = {|
   defaults?: string,
@@ -28,7 +29,7 @@ type Catalog = {
 
 type Catalogs = { [key: string]: Catalog }
 
-type setupI18nProps = {
+export type setupI18nProps = {
   language?: string,
   locales?: Locales,
   catalogs?: Catalogs,
@@ -233,7 +234,13 @@ class I18n {
   }
 }
 
-function setupI18n(params?: setupI18nProps = {}): I18n {
+type CallableI18n =
+  | {
+      (id: string | Object, values?: Object, options?: MessageOptions): string
+    }
+  | I18n
+
+function setupI18n(params?: setupI18nProps = {}): CallableI18n {
   const i18n = new I18n()
 
   if (process.env.NODE_ENV !== "production") {
@@ -244,7 +251,17 @@ function setupI18n(params?: setupI18nProps = {}): I18n {
   if (params.language) i18n.activate(params.language, params.locales)
   if (params.missing) i18n._missing = params.missing
 
-  return i18n
+  function _(
+    id: string | Object,
+    values?: Object,
+    options?: MessageOptions
+  ): string {
+    return i18n._(id, values, options)
+  }
+
+  makeCallableObject(i18n, _)
+
+  return _
 }
 
 const i18n = setupI18n()
