@@ -20,7 +20,7 @@ describe("PseudoLocalization", () => {
     )
   })
 
-  it("should pseudlocalize plurals with HTML tags", () => {
+  it("should pseudolocalize plurals with HTML tags", () => {
     expect(
       pseudoLocalize(
         "{messagesCount, plural, zero {There's # <span>message</span>} other {There're # messages}"
@@ -34,6 +34,9 @@ describe("PseudoLocalization", () => {
     expect(
       pseudoLocalize("{value, plural, one {# book} other {# books}}")
     ).toEqual("{value, plural, one {# ƀōōķ} other {# ƀōōķś}}")
+    expect(
+      pseudoLocalize("{count, plural, one {{countString} book} other {{countString} books}}")
+    ).toEqual("{count, plural, one {{countString} ƀōōķ} other {{countString} ƀōōķś}}")
   })
 
   it("shouldn't pseudolocalize variables", () => {
